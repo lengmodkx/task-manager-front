@@ -143,9 +143,10 @@ export async function updateUserRole(
       return { success: false, error: auth.error! }
     }
 
-    const supabase = await createClient()
+    // 使用 Admin 客户端绑过 RLS
+    const adminClient = createAdminClient()
 
-    const { error } = await supabase
+    const { error } = await adminClient
       .from('user_profiles')
       .update({ role })
       .eq('id', userId)
@@ -179,9 +180,10 @@ export async function toggleUserStatus(
       return { success: false, error: '不能禁用自己的账号' }
     }
 
-    const supabase = await createClient()
+    // 使用 Admin 客户端绑过 RLS
+    const adminClient = createAdminClient()
 
-    const { error } = await supabase
+    const { error } = await adminClient
       .from('user_profiles')
       .update({ is_active: isActive })
       .eq('id', userId)
@@ -268,7 +270,9 @@ export async function deleteUser(
     }
 
     // Soft delete: set is_active to false
-    const { error } = await supabase
+    // 使用 Admin 客户端绑过 RLS
+    const adminClient = createAdminClient()
+    const { error } = await adminClient
       .from('user_profiles')
       .update({ is_active: false })
       .eq('id', userId)
