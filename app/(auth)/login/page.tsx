@@ -28,15 +28,14 @@ function LoginForm() {
 
     if (error) {
       console.error('Login error:', error)
-      // 翻译常见错误为中文
-      let errorMessage = '登录失败，请重试'
-      if (error.message.includes('Invalid login credentials')) {
-        errorMessage = '邮箱或密码错误'
-      } else if (error.message.includes('Email not confirmed')) {
-        errorMessage = '邮箱未验证，请先验证邮箱'
-      } else if (error.message.includes('User not found')) {
-        errorMessage = '用户不存在'
+      // 根据 Supabase Auth 错误代码翻译为中文
+      const errorMessages: Record<string, string> = {
+        'invalid_credentials': '邮箱或密码错误',
+        'email_not_confirmed': '邮箱未验证，请先验证邮箱',
+        'user_not_found': '用户不存在',
+        'over_request_rate_limit': '请求过于频繁，请稍后再试',
       }
+      const errorMessage = errorMessages[error.code || ''] || '登录失败，请重试'
       setError(errorMessage)
       setLoading(false)
       return
