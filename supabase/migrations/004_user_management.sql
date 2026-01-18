@@ -12,18 +12,9 @@ ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS
 CREATE INDEX IF NOT EXISTS idx_user_profiles_is_active ON user_profiles(is_active);
 CREATE INDEX IF NOT EXISTS idx_user_profiles_role ON user_profiles(role);
 
--- RLS policy for admins to view all users
-DROP POLICY IF EXISTS "Admins can view all users" ON user_profiles;
-CREATE POLICY "Admins can view all users" ON user_profiles
-  FOR SELECT USING (
-    auth.uid() = id OR
-    EXISTS (SELECT 1 FROM user_profiles WHERE id = auth.uid() AND role = 'admin')
-  );
-
--- RLS policy for admins to update users
-DROP POLICY IF EXISTS "Admins can update all users" ON user_profiles;
-CREATE POLICY "Admins can update all users" ON user_profiles
-  FOR UPDATE USING (
-    auth.uid() = id OR
-    EXISTS (SELECT 1 FROM user_profiles WHERE id = auth.uid() AND role = 'admin')
-  );
+-- Note: Keep original RLS policies from 001_initial_schema.sql
+-- "Users can view all profiles" allows everyone to read profiles
+-- "Users can update own profile" allows users to update their own profile
+--
+-- For admin operations, we use service_role key in server actions
+-- which bypasses RLS entirely
