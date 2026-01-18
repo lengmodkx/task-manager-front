@@ -16,6 +16,7 @@ function RegisterForm() {
   const [invitationCode, setInvitationCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false) // 注册成功状态
 
   // Invitation code validation state
   const [codeStatus, setCodeStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle')
@@ -89,6 +90,12 @@ function RegisterForm() {
     const { data, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: {
+          invitation_code: invitationCode, // 存储邀请码到用户元数据
+        },
+      },
     })
 
     if (signUpError) {
@@ -104,9 +111,39 @@ function RegisterForm() {
       await recordInvitationUse(invitationCode, data.user.id)
     }
 
-    // Redirect to board
+    // 检查是否需要邮件确认
+    if (data.user && !data.session) {
+      // 需要邮件确认
+      setSuccess(true)
+      setLoading(false)
+      return
+    }
+
+    // 直接登录成功，跳转到 board
     router.push('/board')
     router.refresh()
+  }
+
+  // 显示注册成功提示
+  if (success) {
+    return (
+      <div className="text-center py-4">
+        <CheckCircle size={48} className="text-green-500 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">注册成功！</h3>
+        <p className="text-gray-600 mb-4">
+          我们已向 <span className="font-medium">{email}</span> 发送了一封确认邮件。
+        </p>
+        <p className="text-sm text-gray-500">
+          请检查您的邮箱并点击确认链接完成注册。
+        </p>
+        <Link
+          href="/login"
+          className="inline-block mt-6 text-blue-500 hover:underline"
+        >
+          返回登录
+        </Link>
+      </div>
+    )
   }
 
   return (
