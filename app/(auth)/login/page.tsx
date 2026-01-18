@@ -28,7 +28,16 @@ function LoginForm() {
 
     if (error) {
       console.error('Login error:', error)
-      setError(error.message || '邮箱或密码错误')
+      // 翻译常见错误为中文
+      let errorMessage = '登录失败，请重试'
+      if (error.message.includes('Invalid login credentials')) {
+        errorMessage = '邮箱或密码错误'
+      } else if (error.message.includes('Email not confirmed')) {
+        errorMessage = '邮箱未验证，请先验证邮箱'
+      } else if (error.message.includes('User not found')) {
+        errorMessage = '用户不存在'
+      }
+      setError(errorMessage)
       setLoading(false)
       return
     }
