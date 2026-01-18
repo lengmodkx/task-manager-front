@@ -13,9 +13,9 @@ interface TaskCardProps {
 }
 
 const statusColors = {
-  todo: 'bg-gray-100 border-gray-300',
-  doing: 'bg-blue-50 border-blue-300',
-  done: 'bg-green-50 border-green-300',
+  todo: 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600',
+  doing: 'bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700',
+  done: 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-700',
 }
 
 const statusLabels = {
@@ -56,7 +56,7 @@ export function TaskCard({ task, onEdit, onDelete, onStatusChange }: TaskCardPro
         <button
           {...attributes}
           {...listeners}
-          className="mt-1 cursor-grab text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="mt-1 cursor-grab text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
         >
           <GripVertical size={16} />
         </button>
@@ -67,22 +67,22 @@ export function TaskCard({ task, onEdit, onDelete, onStatusChange }: TaskCardPro
               onClick={() => onStatusChange(task.id, nextStatus())}
               className={`text-xs px-2 py-0.5 rounded-full ${
                 task.status === 'done'
-                  ? 'bg-green-200 text-green-800'
+                  ? 'bg-green-200 dark:bg-green-900/50 text-green-800 dark:text-green-300'
                   : task.status === 'doing'
-                  ? 'bg-blue-200 text-blue-800'
-                  : 'bg-gray-200 text-gray-800'
+                  ? 'bg-blue-200 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
               }`}
             >
               {statusLabels[task.status]}
             </button>
           </div>
 
-          <h4 className={`font-medium text-gray-900 ${task.status === 'done' ? 'line-through text-gray-500' : ''}`}>
+          <h4 className={`font-medium text-gray-900 dark:text-gray-100 ${task.status === 'done' ? 'line-through text-gray-500 dark:text-gray-500' : ''}`}>
             {task.title}
           </h4>
 
           {task.content && (
-            <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
               {task.content}
             </p>
           )}
@@ -105,13 +105,13 @@ export function TaskCard({ task, onEdit, onDelete, onStatusChange }: TaskCardPro
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => onEdit(task)}
-            className="p-1 text-gray-400 hover:text-blue-600 rounded"
+            className="p-1 text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 rounded"
           >
             <Pencil size={14} />
           </button>
           <button
             onClick={() => onDelete(task.id)}
-            className="p-1 text-gray-400 hover:text-red-600 rounded"
+            className="p-1 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 rounded"
           >
             <Trash2 size={14} />
           </button>

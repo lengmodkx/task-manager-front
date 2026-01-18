@@ -28,7 +28,7 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-left flex items-center justify-between hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-left flex items-center justify-between hover:border-gray-400 dark:hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
       >
         <span className="flex flex-wrap gap-1">
           {selectedTags.length > 0 ? (
@@ -45,12 +45,12 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
               </span>
             ))
           ) : (
-            <span className="text-gray-400">选择标签</span>
+            <span className="text-gray-400 dark:text-gray-500">选择标签</span>
           )}
         </span>
         <ChevronDown
           size={16}
-          className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`transition-transform text-gray-500 dark:text-gray-400 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -60,15 +60,15 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
             {tags.length === 0 ? (
-              <div className="px-3 py-2 text-sm text-gray-500">暂无标签</div>
+              <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">暂无标签</div>
             ) : (
               <>
                 {/* System tags */}
                 {tags.filter((t) => t.type === 'system').length > 0 && (
                   <div>
-                    <div className="px-3 py-1.5 text-xs font-medium text-gray-400 bg-gray-50">
+                    <div className="px-3 py-1.5 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50">
                       系统标签
                     </div>
                     {tags
@@ -78,7 +78,7 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
                           key={tag.id}
                           type="button"
                           onClick={() => toggle(tag.id)}
-                          className="w-full px-3 py-2 text-left flex items-center justify-between hover:bg-gray-50"
+                          className="w-full px-3 py-2 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700"
                         >
                           <span
                             className="text-sm px-2 py-0.5 rounded-full"
@@ -90,7 +90,7 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
                             {tag.name}
                           </span>
                           {selectedIds.includes(tag.id) && (
-                            <Check size={16} className="text-blue-500" />
+                            <Check size={16} className="text-blue-500 dark:text-blue-400" />
                           )}
                         </button>
                       ))}
@@ -100,7 +100,7 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
                 {/* Personal tags */}
                 {tags.filter((t) => t.type === 'personal').length > 0 && (
                   <div>
-                    <div className="px-3 py-1.5 text-xs font-medium text-gray-400 bg-gray-50">
+                    <div className="px-3 py-1.5 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50">
                       个人标签
                     </div>
                     {tags
@@ -110,7 +110,7 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
                           key={tag.id}
                           type="button"
                           onClick={() => toggle(tag.id)}
-                          className="w-full px-3 py-2 text-left flex items-center justify-between hover:bg-gray-50"
+                          className="w-full px-3 py-2 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700"
                         >
                           <span
                             className="text-sm px-2 py-0.5 rounded-full"
@@ -122,7 +122,7 @@ export function TagSelector({ tags, selectedIds, onChange }: TagSelectorProps) {
                             {tag.name}
                           </span>
                           {selectedIds.includes(tag.id) && (
-                            <Check size={16} className="text-blue-500" />
+                            <Check size={16} className="text-blue-500 dark:text-blue-400" />
                           )}
                         </button>
                       ))}

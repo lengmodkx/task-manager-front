@@ -113,27 +113,27 @@ export function ReportGenerator({ existingReport, onSaved }: ReportGeneratorProp
   return (
     <div className="space-y-4">
       {/* Week Selector */}
-      <div className="flex items-center justify-between bg-white rounded-lg border p-4">
+      <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
         <button
           onClick={handlePrevWeek}
-          className="p-2 rounded-lg hover:bg-gray-100"
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <ChevronLeft size={20} />
         </button>
 
         <div className="text-center">
-          <div className="text-lg font-semibold">
+          <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             {format(weekStart, 'yyyy年M月d日', { locale: zhCN })} -{' '}
             {format(weekEnd, 'M月d日', { locale: zhCN })}
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 dark:text-gray-400">
             第 {format(weekStart, 'w', { locale: zhCN })} 周
           </div>
         </div>
 
         <button
           onClick={handleNextWeek}
-          className="p-2 rounded-lg hover:bg-gray-100"
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <ChevronRight size={20} />
         </button>
@@ -155,7 +155,7 @@ export function ReportGenerator({ existingReport, onSaved }: ReportGeneratorProp
             <button
               onClick={() => handleSave('draft')}
               disabled={saving}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
             >
               <Save size={18} />
               保存草稿
@@ -172,7 +172,7 @@ export function ReportGenerator({ existingReport, onSaved }: ReportGeneratorProp
 
             <button
               onClick={handleCopy}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               {copied ? <Check size={18} /> : <Copy size={18} />}
               {copied ? '已复制' : '复制'}
@@ -182,7 +182,7 @@ export function ReportGenerator({ existingReport, onSaved }: ReportGeneratorProp
       </div>
 
       {error && (
-        <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+        <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-sm">
           {error}
         </div>
       )}
@@ -190,28 +190,28 @@ export function ReportGenerator({ existingReport, onSaved }: ReportGeneratorProp
       {/* Editor & Preview */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Editor */}
-        <div className="bg-white rounded-lg border">
-          <div className="px-4 py-2 border-b bg-gray-50 font-medium text-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 font-medium text-sm text-gray-900 dark:text-gray-100">
             编辑
           </div>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full p-4 min-h-[500px] resize-none focus:outline-none font-mono text-sm"
+            className="w-full p-4 min-h-[500px] resize-none focus:outline-none font-mono text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             placeholder="点击「AI 生成周报」自动生成，或手动编写..."
           />
         </div>
 
         {/* Preview */}
-        <div className="bg-white rounded-lg border">
-          <div className="px-4 py-2 border-b bg-gray-50 font-medium text-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 font-medium text-sm text-gray-900 dark:text-gray-100">
             预览
           </div>
-          <div className="p-4 min-h-[500px] prose prose-sm max-w-none">
+          <div className="p-4 min-h-[500px] prose prose-sm max-w-none dark:prose-invert">
             {content ? (
               <ReactMarkdown>{content}</ReactMarkdown>
             ) : (
-              <p className="text-gray-400">预览将在此显示...</p>
+              <p className="text-gray-400 dark:text-gray-500">预览将在此显示...</p>
             )}
           </div>
         </div>

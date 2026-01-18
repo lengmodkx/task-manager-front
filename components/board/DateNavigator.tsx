@@ -23,8 +23,8 @@ export function DateNavigator({
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">任务看板</h1>
-        <div className="flex items-center gap-2 text-gray-600">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">任务看板</h1>
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
           <Calendar size={18} />
           <span>
             {format(weekStart, 'M月d日', { locale: zhCN })} - {format(weekEnd, 'M月d日', { locale: zhCN })}
@@ -35,7 +35,7 @@ export function DateNavigator({
       <div className="flex items-center gap-2">
         <button
           onClick={onPrevWeek}
-          className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           title="上一周"
         >
           <ChevronLeft size={20} />
@@ -50,7 +50,7 @@ export function DateNavigator({
 
         <button
           onClick={onNextWeek}
-          className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           title="下一周"
         >
           <ChevronRight size={20} />

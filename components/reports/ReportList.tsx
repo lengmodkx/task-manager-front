@@ -27,7 +27,7 @@ export function ReportList({ reports, onEdit, onView }: ReportListProps) {
 
   if (items.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-500">
+      <div className="text-center py-12 text-gray-500 dark:text-gray-400">
         <FileText size={48} className="mx-auto mb-4 opacity-50" />
         <p>暂无周报记录</p>
       </div>
@@ -39,7 +39,7 @@ export function ReportList({ reports, onEdit, onView }: ReportListProps) {
       {items.map((report) => (
         <div
           key={report.id}
-          className="bg-white rounded-lg border p-4 flex items-center justify-between hover:shadow-sm transition-shadow"
+          className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between hover:shadow-sm transition-shadow"
         >
           <div className="flex items-center gap-4">
             <div
@@ -48,11 +48,11 @@ export function ReportList({ reports, onEdit, onView }: ReportListProps) {
               }`}
             />
             <div>
-              <div className="font-medium">
+              <div className="font-medium text-gray-900 dark:text-gray-100">
                 {format(new Date(report.week_start), 'yyyy年M月d日', { locale: zhCN })} -{' '}
                 {format(new Date(report.week_end), 'M月d日', { locale: zhCN })}
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
                 {report.status === 'final' ? '已完成' : '草稿'} ·{' '}
                 {format(new Date(report.created_at), 'M月d日 HH:mm')}
               </div>
@@ -62,21 +62,21 @@ export function ReportList({ reports, onEdit, onView }: ReportListProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => onView(report)}
-              className="p-2 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-gray-100"
+              className="p-2 text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
               title="查看"
             >
               <Eye size={18} />
             </button>
             <button
               onClick={() => onEdit(report)}
-              className="p-2 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-gray-100"
+              className="p-2 text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
               title="编辑"
             >
               <Edit size={18} />
             </button>
             <button
               onClick={() => handleDelete(report.id)}
-              className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-100"
+              className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
               title="删除"
             >
               <Trash2 size={18} />
