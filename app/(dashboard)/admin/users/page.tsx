@@ -137,8 +137,8 @@ export default function UsersPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">用户管理</h1>
-          <p className="text-gray-500 mt-1">管理系统用户</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">用户管理</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">管理系统用户</p>
         </div>
       </div>
 
@@ -147,8 +147,8 @@ export default function UsersPage() {
         <div
           className={`mb-4 p-3 rounded-lg text-sm ${
             message.type === 'success'
-              ? 'bg-green-50 text-green-700 border border-green-200'
-              : 'bg-red-50 text-red-700 border border-red-200'
+              ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'
+              : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
           }`}
         >
           {message.text}
@@ -160,7 +160,7 @@ export default function UsersPage() {
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">全部角色</option>
           <option value="admin">管理员</option>
@@ -170,7 +170,7 @@ export default function UsersPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">全部状态</option>
           <option value="active">正常</option>
@@ -181,66 +181,66 @@ export default function UsersPage() {
       {/* Users Table */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-500">加载中...</div>
+          <div className="text-gray-500 dark:text-gray-400">加载中...</div>
         </div>
       ) : users.length === 0 ? (
-        <div className="bg-white rounded-lg border p-8 text-center">
-          <Users size={48} className="text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">暂无用户</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
+          <Users size={48} className="text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+          <p className="text-gray-500 dark:text-gray-400">暂无用户</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b">
+            <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">用户</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">角色</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">邀请码</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">任务数</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">注册时间</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">最后登录</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">状态</th>
-                <th className="text-right px-4 py-3 text-sm font-medium text-gray-600">操作</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">用户</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">角色</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">邀请码</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">任务数</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">注册时间</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">最后登录</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">状态</th>
+                <th className="text-right px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400">操作</th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {users.map((user) => (
-                <tr key={user.id} className={!user.is_active ? 'bg-gray-50' : ''}>
+                <tr key={user.id} className={!user.is_active ? 'bg-gray-50 dark:bg-gray-900/50' : ''}>
                   <td className="px-4 py-3">
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{user.email}</p>
-                      <p className="text-xs text-gray-500">{user.nickname || '-'}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{user.email}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{user.nickname || '-'}</p>
                     </div>
                   </td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
                         user.role === 'admin'
-                          ? 'bg-purple-100 text-purple-700'
-                          : 'bg-gray-100 text-gray-700'
+                          ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       {user.role === 'admin' ? '管理员' : '普通用户'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">
+                  <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                     {user.invitation_code ? (
-                      <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded">
+                      <code className="text-xs bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded">
                         {user.invitation_code}
                       </code>
                     ) : (
                       '-'
                     )}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{user.task_count}</td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{formatDate(user.created_at)}</td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{formatDate(user.last_login_at)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{user.task_count}</td>
+                  <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{formatDate(user.created_at)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{formatDate(user.last_login_at)}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
                         user.is_active
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-red-100 text-red-700'
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                          : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
                       }`}
                     >
                       {user.is_active ? '正常' : '已禁用'}
@@ -250,7 +250,7 @@ export default function UsersPage() {
                     <div className="relative flex justify-end">
                       <button
                         onClick={() => setOpenMenuId(openMenuId === user.id ? null : user.id)}
-                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded"
+                        className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
                       >
                         <MoreVertical size={18} />
                       </button>
@@ -261,10 +261,10 @@ export default function UsersPage() {
                             className="fixed inset-0 z-10"
                             onClick={() => setOpenMenuId(null)}
                           />
-                          <div className="absolute right-0 top-full mt-1 w-40 bg-white rounded-lg border shadow-lg z-20 py-1">
+                          <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg z-20 py-1">
                             <button
                               onClick={() => handleRoleChange(user.id, user.role)}
-                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                             >
                               {user.role === 'admin' ? (
                                 <>
@@ -281,7 +281,7 @@ export default function UsersPage() {
 
                             <button
                               onClick={() => openResetPasswordModal(user.id, user.email)}
-                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                             >
                               <Key size={16} />
                               重置密码
@@ -289,7 +289,7 @@ export default function UsersPage() {
 
                             <button
                               onClick={() => handleToggleStatus(user.id, user.is_active)}
-                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                             >
                               {user.is_active ? (
                                 <>
@@ -304,11 +304,11 @@ export default function UsersPage() {
                               )}
                             </button>
 
-                            <div className="border-t my-1" />
+                            <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
 
                             <button
                               onClick={() => handleDelete(user.id)}
-                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                             >
                               <Trash2 size={16} />
                               删除用户

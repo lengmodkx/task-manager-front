@@ -154,7 +154,7 @@ export default function TemplatesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">加载中...</div>
+        <div className="text-gray-500 dark:text-gray-400">加载中...</div>
       </div>
     )
   }
@@ -163,12 +163,12 @@ export default function TemplatesPage() {
     return (
       <div className="max-w-3xl">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {editMode === 'create' ? '新建模板' : '编辑模板'}
           </h1>
           <button
             onClick={handleBack}
-            className="text-gray-600 hover:text-gray-900"
+            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
           >
             返回列表
           </button>
@@ -178,8 +178,8 @@ export default function TemplatesPage() {
           <div
             className={`mb-4 p-3 rounded-lg text-sm ${
               message.type === 'success'
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-red-50 text-red-700 border border-red-200'
+                ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'
+                : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
             }`}
           >
             {message.text}
@@ -187,9 +187,9 @@ export default function TemplatesPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-white rounded-lg border p-6 space-y-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 模板名称
               </label>
               <input
@@ -197,7 +197,7 @@ export default function TemplatesPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="例如：标准周报模板"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -207,9 +207,9 @@ export default function TemplatesPage() {
                 id="isDefault"
                 checked={isDefault}
                 onChange={(e) => setIsDefault(e.target.checked)}
-                className="rounded border-gray-300"
+                className="rounded border-gray-300 dark:border-gray-600"
               />
-              <label htmlFor="isDefault" className="text-sm text-gray-700">
+              <label htmlFor="isDefault" className="text-sm text-gray-700 dark:text-gray-300">
                 设为默认模板
               </label>
             </div>
@@ -217,11 +217,11 @@ export default function TemplatesPage() {
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-900">章节配置</h2>
+              <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">章节配置</h2>
               <button
                 type="button"
                 onClick={handleAddSection}
-                className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+                className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
               >
                 <Plus size={16} />
                 添加章节
@@ -229,14 +229,14 @@ export default function TemplatesPage() {
             </div>
 
             {sections.map((section, index) => (
-              <div key={section.id} className="bg-white rounded-lg border p-4 space-y-3">
+              <div key={section.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-500">章节 {index + 1}</span>
+                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">章节 {index + 1}</span>
                   {sections.length > 1 && (
                     <button
                       type="button"
                       onClick={() => handleRemoveSection(index)}
-                      className="text-gray-400 hover:text-red-500"
+                      className="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400"
                     >
                       <X size={16} />
                     </button>
@@ -244,7 +244,7 @@ export default function TemplatesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     标题
                   </label>
                   <input
@@ -252,18 +252,18 @@ export default function TemplatesPage() {
                     value={section.title}
                     onChange={(e) => handleSectionChange(index, 'title', e.target.value)}
                     placeholder="例如：本周完成工作"
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     类型
                   </label>
                   <select
                     value={section.type}
                     onChange={(e) => handleSectionChange(index, 'type', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="task_list">任务列表</option>
                     <option value="free_text">自由文本</option>
@@ -271,7 +271,7 @@ export default function TemplatesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     AI 提示词
                   </label>
                   <textarea
@@ -279,7 +279,7 @@ export default function TemplatesPage() {
                     onChange={(e) => handleSectionChange(index, 'prompt', e.target.value)}
                     placeholder="例如：根据本周完成的任务，总结主要工作成果"
                     rows={3}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -298,7 +298,7 @@ export default function TemplatesPage() {
             <button
               type="button"
               onClick={handleBack}
-              className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               取消
             </button>
@@ -312,8 +312,8 @@ export default function TemplatesPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">模板管理</h1>
-          <p className="text-gray-500 mt-1">管理周报生成模板</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">模板管理</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">管理周报生成模板</p>
         </div>
         <button
           onClick={handleCreate}
@@ -325,11 +325,11 @@ export default function TemplatesPage() {
       </div>
 
       {templates.length === 0 ? (
-        <div className="bg-white rounded-lg border p-8 text-center">
-          <p className="text-gray-500 mb-4">暂无模板，创建一个吧</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
+          <p className="text-gray-500 dark:text-gray-400 mb-4">暂无模板，创建一个吧</p>
           <button
             onClick={handleCreate}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
           >
             创建模板
           </button>
@@ -341,15 +341,15 @@ export default function TemplatesPage() {
             return (
               <div
                 key={template.id}
-                className="bg-white rounded-lg border p-4 flex items-center justify-between"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
                   {template.is_default && (
                     <Star size={16} className="text-yellow-500 fill-yellow-500" />
                   )}
                   <div>
-                    <h3 className="font-medium text-gray-900">{template.name}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-medium text-gray-900 dark:text-gray-100">{template.name}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {content.sections.length} 个章节
                       {template.is_default && ' · 默认模板'}
                     </p>
@@ -360,7 +360,7 @@ export default function TemplatesPage() {
                   {!template.is_default && (
                     <button
                       onClick={() => handleSetDefault(template.id)}
-                      className="p-2 text-gray-400 hover:text-yellow-500"
+                      className="p-2 text-gray-400 dark:text-gray-500 hover:text-yellow-500 dark:hover:text-yellow-400"
                       title="设为默认"
                     >
                       <Star size={18} />
@@ -368,14 +368,14 @@ export default function TemplatesPage() {
                   )}
                   <button
                     onClick={() => handleEdit(template)}
-                    className="p-2 text-gray-400 hover:text-blue-500"
+                    className="p-2 text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400"
                     title="编辑"
                   >
                     <Edit2 size={18} />
                   </button>
                   <button
                     onClick={() => handleDelete(template.id)}
-                    className="p-2 text-gray-400 hover:text-red-500"
+                    className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400"
                     title="删除"
                   >
                     <Trash2 size={18} />

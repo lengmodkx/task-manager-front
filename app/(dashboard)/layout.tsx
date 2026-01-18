@@ -24,7 +24,7 @@ export default async function DashboardLayout({
   const isAdmin = profile?.role === 'admin'
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar isAdmin={isAdmin} />
       <div className="flex-1 flex flex-col">
         <Navbar userEmail={user.email} />
