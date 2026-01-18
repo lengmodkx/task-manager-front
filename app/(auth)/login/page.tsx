@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
 function LoginForm() {
@@ -87,7 +88,10 @@ export default function LoginPage() {
       </Suspense>
 
       <p className="mt-4 text-center text-sm text-gray-600">
-        没有账号？联系管理员获取邀请
+        没有账号？
+        <Link href="/register" className="text-blue-500 hover:underline ml-1">
+          立即注册
+        </Link>
       </p>
     </div>
   )

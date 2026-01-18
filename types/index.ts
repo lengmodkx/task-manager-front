@@ -62,3 +62,22 @@ export interface UserProfile {
   avatar_url: string | null
   role: 'admin' | 'member'
 }
+
+export interface InvitationCode {
+  id: string
+  code: string
+  created_by: string
+  max_uses: number
+  used_count: number
+  expires_at: string | null
+  is_active: boolean
+  note: string | null
+  created_at: string
+}
+
+export interface InvitationUse {
+  id: string
+  invitation_id: string
+  used_by: string
+  used_at: string
+}

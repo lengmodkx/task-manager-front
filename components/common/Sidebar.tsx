@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, Settings, Tags, FileCode } from 'lucide-react'
+import { LayoutDashboard, FileText, Settings, Tags, FileCode, UserPlus } from 'lucide-react'
 
 const menuItems = [
   { href: '/board', label: '看板', icon: LayoutDashboard },
@@ -13,6 +13,7 @@ const menuItems = [
 const adminItems = [
   { href: '/admin/tags', label: '标签管理', icon: Tags },
   { href: '/admin/templates', label: '模板管理', icon: FileCode },
+  { href: '/admin/invitations', label: '邀请码管理', icon: UserPlus },
 ]
 
 export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {

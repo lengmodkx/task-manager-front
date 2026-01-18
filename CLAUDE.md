@@ -12,6 +12,7 @@
 - **任务管理**: 创建、编辑、删除任务，支持标签分类
 - **周报生成**: 基于任务数据，使用 AI (DeepSeek) 自动生成周报
 - **模板管理**: 管理员可配置周报生成模板
+- **邀请码注册**: 通过邀请码控制用户注册
 
 ## 技术栈
 
@@ -81,6 +82,8 @@ DEEPSEEK_API_KEY=<deepseek-api-key>
 - `task_tags`: 任务-标签关联
 - `report_templates`: 周报模板
 - `weekly_reports`: 周报记录
+- `invitation_codes`: 邀请码 (code、使用次数、过期时间)
+- `invitation_uses`: 邀请码使用记录
 
 ### RLS 策略
 
@@ -110,6 +113,7 @@ DEEPSEEK_API_KEY=<deepseek-api-key>
 
 - `/admin/tags`: 标签管理
 - `/admin/templates`: 模板管理
+- `/admin/invitations`: 邀请码管理
 
 ## 已知问题
 
@@ -117,7 +121,9 @@ DEEPSEEK_API_KEY=<deepseek-api-key>
 
 ## 待实现功能
 
-- [ ] 部署到 Vercel
+- [x] 部署到 Vercel
+- [x] 邀请码注册
+- [ ] 钉钉登录
 - [ ] 任务搜索功能
 - [ ] 周报导出 (PDF/Word)
-- [ ] 团队协作功能
+- [ ] 管理员仪表盘（统计视图）
