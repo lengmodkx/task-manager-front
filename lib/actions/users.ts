@@ -103,11 +103,9 @@ export async function getUsers(filters?: {
       }
     })
 
-    // Get emails from auth - we need to use a workaround since we can't directly query auth.users
-    // For now, we'll need to store email in user_profiles or use admin API
-    // Let's assume email is available via the profile or we add it
-
-    const { data: authUsers } = await supabase.auth.admin.listUsers()
+    // 使用 Admin 客户端获取用户邮箱
+    const adminClient = createAdminClient()
+    const { data: authUsers } = await adminClient.auth.admin.listUsers()
 
     const emailMap: Record<string, string> = {}
     authUsers?.users?.forEach(u => {
