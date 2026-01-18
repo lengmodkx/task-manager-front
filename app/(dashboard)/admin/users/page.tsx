@@ -204,7 +204,9 @@ export default function UsersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {users.map((user) => (
+              {users.map((user, index) => {
+                const showMenuAbove = index >= users.length / 2
+                return (
                 <tr key={user.id} className={!user.is_active ? 'bg-gray-50 dark:bg-gray-900/50' : ''}>
                   <td className="px-4 py-3">
                     <div>
@@ -261,7 +263,7 @@ export default function UsersPage() {
                             className="fixed inset-0 z-10"
                             onClick={() => setOpenMenuId(null)}
                           />
-                          <div className="absolute right-0 bottom-full mb-1 w-40 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg z-20 py-1">
+                          <div className={`absolute right-0 w-40 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg z-20 py-1 ${showMenuAbove ? 'bottom-full mb-1' : 'top-full mt-1'}`}>
                             <button
                               onClick={() => handleRoleChange(user.id, user.role)}
                               className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -319,7 +321,7 @@ export default function UsersPage() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         </div>
