@@ -269,13 +269,10 @@ export async function deleteUser(
       return { success: false, error: '不能删除管理员账号，请先将其降级为普通用户' }
     }
 
-    // Soft delete: set is_active to false
-    // 使用 Admin 客户端绑过 RLS
+    // 真删除：从 Supabase Auth 中删除用户
+    // 关联数据会通过 ON DELETE CASCADE 自动删除
     const adminClient = createAdminClient()
-    const { error } = await adminClient
-      .from('user_profiles')
-      .update({ is_active: false })
-      .eq('id', userId)
+    const { error } = await adminClient.auth.admin.deleteUser(userId)
 
     if (error) {
       return { success: false, error: error.message }
