@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 
 export interface UserWithStats {
   id: string
@@ -203,7 +203,8 @@ export async function toggleUserStatus(
 }
 
 export async function resetUserPassword(
-  userId: string
+  userId: string,
+  newPassword: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const auth = await checkAdminRole()
@@ -211,28 +212,26 @@ export async function resetUserPassword(
       return { success: false, error: auth.error! }
     }
 
-    const supabase = await createClient()
-
-    // Get user email first
-    const { data: authData } = await supabase.auth.admin.getUserById(userId)
-
-    if (!authData?.user?.email) {
-      return { success: false, error: '找不到用户邮箱' }
+    if (!newPassword || newPassword.length < 6) {
+      return { success: false, error: '密码长度至少为6位' }
     }
 
-    // Generate password reset link
-    const { error } = await supabase.auth.admin.generateLink({
-      type: 'recovery',
-      email: authData.user.email,
+    // 使用 Admin API 直接设置新密码
+    const trimmedPassword = newPassword.trim()
+    console.log('Setting password, length:', trimmedPassword.length)
+
+    const adminClient = createAdminClient()
+    const { data, error } = await adminClient.auth.admin.updateUserById(userId, {
+      password: trimmedPassword,
+      email_confirm: true, // 同时确认邮箱
     })
 
+    console.log('Reset password result:', { userId, data, error })
+
     if (error) {
+      console.error('Reset password error:', error)
       return { success: false, error: error.message }
     }
-
-    // In production, you would send this link via email
-    // For now, we'll use Supabase's built-in email
-    await supabase.auth.resetPasswordForEmail(authData.user.email)
 
     return { success: true }
   } catch (error) {

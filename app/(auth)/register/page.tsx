@@ -4,8 +4,9 @@ import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { verifyInvitationCode, recordInvitationUse } from '@/lib/actions/invitations'
-import { CheckCircle, XCircle, Loader2, Mail, Lock, Ticket, Sparkles, UserPlus } from 'lucide-react'
+import { verifyInvitationCode } from '@/lib/actions/invitations'
+import { registerUser } from '@/lib/actions/auth'
+import { CheckCircle, XCircle, Loader2, Mail, Lock, Ticket, Sparkles, UserPlus, Eye, EyeOff } from 'lucide-react'
 
 function RegisterForm() {
   const router = useRouter()
@@ -17,6 +18,8 @@ function RegisterForm() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false) // 注册成功状态
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   // Invitation code validation state
   const [codeStatus, setCodeStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle')
@@ -86,42 +89,34 @@ function RegisterForm() {
 
     setLoading(true)
 
-    const supabase = createClient()
-    const { data, error: signUpError } = await supabase.auth.signUp({
+    // 1. 使用 Server Action 创建用户（跳过邮件确认）
+    const result = await registerUser({
       email,
       password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-        data: {
-          invitation_code: invitationCode, // 存储邀请码到用户元数据
-        },
-      },
+      invitationCode,
     })
 
-    if (signUpError) {
-      setError(signUpError.message === 'User already registered'
-        ? '该邮箱已注册'
-        : signUpError.message)
+    if (!result.success) {
+      setError(result.error || '注册失败')
       setLoading(false)
       return
     }
 
-    // Record invitation use
-    if (data.user) {
-      await recordInvitationUse(invitationCode, data.user.id)
-    }
+    // 2. 注册成功后自动登录
+    const supabase = createClient()
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
-    // 检查是否需要邮件确认
-    if (data.user && !data.session) {
-      // 需要邮件确认
-      setSuccess(true)
+    if (signInError) {
+      setError('注册成功，但自动登录失败，请手动登录')
       setLoading(false)
       return
     }
 
-    // 直接登录成功，跳转到 board
-    router.push('/board')
-    router.refresh()
+    // 3. 跳转到 board
+    window.location.href = '/board'
   }
 
   // 显示注册成功提示
@@ -220,14 +215,21 @@ function RegisterForm() {
         <div className="relative">
           <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="至少6位"
-            className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full pl-12 pr-12 py-3.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             required
             minLength={6}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
       </div>
 
@@ -239,14 +241,21 @@ function RegisterForm() {
         <div className="relative">
           <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="再次输入密码"
-            className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full pl-12 pr-12 py-3.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             required
             minLength={6}
           />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
       </div>
 

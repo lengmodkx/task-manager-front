@@ -21,6 +21,21 @@ export const metadata: Metadata = {
   description: "团队任务管理与周报生成平台",
 };
 
+// 内联脚本：在页面渲染前应用主题，防止闪烁
+const themeScript = `
+(function() {
+  function getTheme() {
+    var stored = localStorage.getItem('theme');
+    if (stored === 'light' || stored === 'dark') return stored;
+    if (stored === 'system' || !stored) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'light';
+  }
+  document.documentElement.classList.add(getTheme());
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,9 +43,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           {children}
         </ThemeProvider>

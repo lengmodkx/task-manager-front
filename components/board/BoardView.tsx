@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useId } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -27,6 +27,7 @@ interface BoardViewProps {
 }
 
 export function BoardView({ initialTasks, tags }: BoardViewProps) {
+  const dndContextId = useId()
   const [tasks, setTasks] = useState<Task[]>(initialTasks)
   const [currentDate, setCurrentDate] = useState(new Date())
   const [activeTask, setActiveTask] = useState<Task | null>(null)
@@ -251,6 +252,7 @@ export function BoardView({ initialTasks, tags }: BoardViewProps) {
       />
 
       <DndContext
+        id={dndContextId}
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}

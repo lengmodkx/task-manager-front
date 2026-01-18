@@ -1,51 +1,47 @@
 'use client'
 
-import { useTheme } from '@/lib/contexts/ThemeContext'
+import { useEffect, useState } from 'react'
 import { Sun, Moon, Monitor } from 'lucide-react'
+import { useTheme } from '@/lib/contexts/ThemeContext'
 
 export function ThemeToggle() {
+  const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const cycleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark')
-    } else if (theme === 'dark') {
-      setTheme('system')
-    } else {
-      setTheme('light')
-    }
+    const next = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'
+    setTheme(next)
   }
 
-  const getIcon = () => {
-    switch (theme) {
-      case 'light':
-        return <Sun size={18} />
-      case 'dark':
-        return <Moon size={18} />
-      case 'system':
-        return <Monitor size={18} />
-    }
+  // 服务端和首次客户端渲染时显示空占位符
+  if (!mounted) {
+    return <div className="w-10 h-10" />
   }
 
-  const getLabel = () => {
-    switch (theme) {
-      case 'light':
-        return '浅色模式'
-      case 'dark':
-        return '深色模式'
-      case 'system':
-        return '跟随系统'
-    }
+  const icons = {
+    light: <Sun size={18} />,
+    dark: <Moon size={18} />,
+    system: <Monitor size={18} />,
+  }
+
+  const labels = {
+    light: '浅色模式',
+    dark: '深色模式',
+    system: '跟随系统',
   }
 
   return (
     <button
       onClick={cycleTheme}
-      className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-700 dark:text-gray-300"
-      title={getLabel()}
-      aria-label={getLabel()}
+      className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400"
+      title={labels[theme]}
+      aria-label={labels[theme]}
     >
-      {getIcon()}
+      {icons[theme]}
     </button>
   )
 }

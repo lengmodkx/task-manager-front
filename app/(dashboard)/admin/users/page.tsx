@@ -10,6 +10,9 @@ import {
   Trash2,
   UserCheck,
   UserX,
+  X,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 import {
   getUsers,
@@ -27,6 +30,12 @@ export default function UsersPage() {
   const [statusFilter, setStatusFilter] = useState('all')
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  // Password reset modal state
+  const [resetPasswordModal, setResetPasswordModal] = useState<{ userId: string; email: string } | null>(null)
+  const [newPassword, setNewPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [resetting, setResetting] = useState(false)
 
   const fetchUsers = async () => {
     setLoading(true)
@@ -72,16 +81,32 @@ export default function UsersPage() {
     setOpenMenuId(null)
   }
 
-  const handleResetPassword = async (userId: string, email: string) => {
-    if (!confirm(`确定要向 ${email} 发送密码重置邮件吗？`)) return
+  const openResetPasswordModal = (userId: string, email: string) => {
+    setResetPasswordModal({ userId, email })
+    setNewPassword('')
+    setShowPassword(false)
+    setOpenMenuId(null)
+  }
 
-    const result = await resetUserPassword(userId)
+  const handleResetPassword = async () => {
+    if (!resetPasswordModal) return
+
+    if (newPassword.length < 6) {
+      showMessage('error', '密码长度至少为6位')
+      return
+    }
+
+    setResetting(true)
+    const result = await resetUserPassword(resetPasswordModal.userId, newPassword)
+    setResetting(false)
+
     if (result.success) {
-      showMessage('success', '密码重置邮件已发送')
+      showMessage('success', '密码重置成功')
+      setResetPasswordModal(null)
+      setNewPassword('')
     } else {
       showMessage('error', result.error || '操作失败')
     }
-    setOpenMenuId(null)
   }
 
   const handleDelete = async (userId: string) => {
@@ -255,7 +280,7 @@ export default function UsersPage() {
                             </button>
 
                             <button
-                              onClick={() => handleResetPassword(user.id, user.email)}
+                              onClick={() => openResetPasswordModal(user.id, user.email)}
                               className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
                             >
                               <Key size={16} />
@@ -297,6 +322,66 @@ export default function UsersPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Reset Password Modal */}
+      {resetPasswordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setResetPasswordModal(null)}
+          />
+          <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 w-full max-w-md mx-4">
+            <button
+              onClick={() => setResetPasswordModal(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            >
+              <X size={20} />
+            </button>
+
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              重置密码
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              为 <span className="font-medium text-gray-700 dark:text-gray-300">{resetPasswordModal.email}</span> 设置新密码
+            </p>
+
+            <div className="space-y-4">
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="输入新密码（至少6位）"
+                  className="w-full px-4 py-3 pr-12 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100 placeholder:text-gray-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setResetPasswordModal(null)}
+                  className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleResetPassword}
+                  disabled={resetting || newPassword.length < 6}
+                  className="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {resetting ? '重置中...' : '确认重置'}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
