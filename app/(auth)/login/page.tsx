@@ -4,6 +4,7 @@ import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { updateLastLogin } from '@/lib/actions/users'
 
 function LoginForm() {
   const router = useRouter()
@@ -19,7 +20,7 @@ function LoginForm() {
     setError('')
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -28,6 +29,11 @@ function LoginForm() {
       setError('邮箱或密码错误')
       setLoading(false)
       return
+    }
+
+    // Update last login time
+    if (data.user) {
+      updateLastLogin(data.user.id)
     }
 
     const redirect = searchParams.get('redirect') || '/board'
