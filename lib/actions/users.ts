@@ -95,9 +95,11 @@ export async function getUsers(filters?: {
       .in('used_by', userIds)
 
     const invitationMap: Record<string, string> = {}
-    invitationUses?.forEach((u: { used_by: string; invitation_codes: { code: string } | null }) => {
-      if (u.invitation_codes?.code) {
-        invitationMap[u.used_by] = u.invitation_codes.code
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    invitationUses?.forEach((u: any) => {
+      const code = u.invitation_codes?.code
+      if (code) {
+        invitationMap[u.used_by] = code
       }
     })
 
