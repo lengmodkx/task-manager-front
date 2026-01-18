@@ -261,7 +261,7 @@ export default function UsersPage() {
                             className="fixed inset-0 z-10"
                             onClick={() => setOpenMenuId(null)}
                           />
-                          <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg z-20 py-1">
+                          <div className="absolute right-0 bottom-full mb-1 w-40 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg z-20 py-1">
                             <button
                               onClick={() => handleRoleChange(user.id, user.role)}
                               className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
