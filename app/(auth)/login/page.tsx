@@ -33,8 +33,23 @@ function LoginForm() {
       return
     }
 
-    // Update last login time
+    // 检查用户是否被禁用
     if (data.user) {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('is_active')
+        .eq('id', data.user.id)
+        .single()
+
+      if (profile?.is_active === false) {
+        // 用户已被禁用，登出并显示错误
+        await supabase.auth.signOut()
+        setError('您的账号已被禁用，请联系管理员')
+        setLoading(false)
+        return
+      }
+
+      // Update last login time
       updateLastLogin(data.user.id)
     }
 
