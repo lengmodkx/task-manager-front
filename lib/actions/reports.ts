@@ -138,3 +138,150 @@ export async function getDefaultTemplate() {
 
   return { success: true, data }
 }
+
+export async function getTemplate(id: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('report_templates')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    return { success: false, error: error.message }
+  }
+
+  return { success: true, data }
+}
+
+export async function createTemplate(input: {
+  name: string
+  content: ReportTemplate['content']
+  is_default?: boolean
+}) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: '未登录' }
+  }
+
+  // Check admin role
+  const { data: profile } = await supabase
+    .from('user_profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (profile?.role !== 'admin') {
+    return { success: false, error: '无权限' }
+  }
+
+  // If setting as default, unset other defaults first
+  if (input.is_default) {
+    await supabase
+      .from('report_templates')
+      .update({ is_default: false })
+      .eq('is_default', true)
+  }
+
+  const { data, error } = await supabase
+    .from('report_templates')
+    .insert({
+      name: input.name,
+      content: input.content,
+      is_default: input.is_default || false,
+      created_by: user.id,
+    })
+    .select()
+    .single()
+
+  if (error) {
+    return { success: false, error: error.message }
+  }
+
+  revalidatePath('/admin/templates')
+  return { success: true, data }
+}
+
+export async function updateTemplate(
+  id: string,
+  input: {
+    name?: string
+    content?: ReportTemplate['content']
+    is_default?: boolean
+  }
+) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: '未登录' }
+  }
+
+  // Check admin role
+  const { data: profile } = await supabase
+    .from('user_profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (profile?.role !== 'admin') {
+    return { success: false, error: '无权限' }
+  }
+
+  // If setting as default, unset other defaults first
+  if (input.is_default) {
+    await supabase
+      .from('report_templates')
+      .update({ is_default: false })
+      .neq('id', id)
+  }
+
+  const { data, error } = await supabase
+    .from('report_templates')
+    .update(input)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    return { success: false, error: error.message }
+  }
+
+  revalidatePath('/admin/templates')
+  return { success: true, data }
+}
+
+export async function deleteTemplate(id: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: '未登录' }
+  }
+
+  // Check admin role
+  const { data: profile } = await supabase
+    .from('user_profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (profile?.role !== 'admin') {
+    return { success: false, error: '无权限' }
+  }
+
+  const { error } = await supabase
+    .from('report_templates')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    return { success: false, error: error.message }
+  }
+
+  revalidatePath('/admin/templates')
+  return { success: true }
+}
