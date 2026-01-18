@@ -1,13 +1,12 @@
 'use client'
 
 import { Suspense, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { updateLastLogin } from '@/lib/actions/users'
 
 function LoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -37,8 +36,7 @@ function LoginForm() {
     }
 
     const redirect = searchParams.get('redirect') || '/board'
-    router.push(redirect)
-    router.refresh()
+    window.location.href = redirect
   }
 
   return (
