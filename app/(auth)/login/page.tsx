@@ -172,7 +172,7 @@ export default function LoginPage() {
 
       {/* 版权信息 */}
       <p className="mt-8 text-center text-xs text-gray-400 dark:text-gray-500">
-        © 2024 任务管理平台. All rights reserved.
+        © {new Date().getFullYear()} 任务管理平台. All rights reserved.
       </p>
     </div>
   )
